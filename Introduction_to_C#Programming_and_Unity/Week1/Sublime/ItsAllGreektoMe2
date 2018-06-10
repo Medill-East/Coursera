@@ -1,0 +1,19 @@
+using System;
+
+public class ItsAllGreektoMe
+{
+    static public void Main ()
+    {
+        Console.WriteLine ("Hello Mono World");
+        CaluculateDistance(2,2,1,1);
+    }
+}
+
+public float CalculateDistance(float x1,float y1,float y1,float y2)
+{
+	float xDistance = Mathf.Pow(x2-x1, 2);
+	float yDistance = Mathf.Pow(y2-y1, 2);
+	float finalDistance = System.Mathf.Sqrt(xDistance + yDistance);
+	Console.WriteLine(finalDistance);
+	return finalDistance;
+}
