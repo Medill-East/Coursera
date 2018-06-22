@@ -28,20 +28,40 @@ namespace ProgrammingAssignment2
             // deal 2 cards each to 3 players (deal properly, dealing
             // the first card to each player before dealing the
             // second card to each player)
-            Card card = new Card();
-            ArrayList person1 = new ArrayList();
-            ArrayList person2 = new ArrayList();
-            ArrayList person3 = new ArrayList();
+
+            Card[] person1Cards = new Card[2];
+            Card[] person2Cards = new Card[2];
+            Card[] person3Cards = new Card[2];
+            for (int i = 0; i < 2;i++)
+            {
+                person1Cards[i] = deck.TakeTopCard();
+                person2Cards[i] = deck.TakeTopCard();
+                person3Cards[i] = deck.TakeTopCard();
+            }
 
             // flip all the cards over
-            card.FlipOver();
+            for (int i = 0; i < 2; i++)
+            {
+                person1Cards[i].FlipOver();
+                person2Cards[i].FlipOver();
+                person3Cards[i].FlipOver();
+            }
 
             // print the cards for player 1
-
+            for (int i = 0; i < 2;i++)
+            {
+                Console.WriteLine("Cards for player 1 :" + person1Cards[i].Rank + " " + person1Cards[i].Suit);
+            }
             // print the cards for player 2
-
+            for (int i = 0; i < 2; i++)
+            {
+                Console.WriteLine("Cards for player 2 :" + person2Cards[i].Rank + " " + person2Cards[i].Suit);
+            }
             // print the cards for player 3
-
+            for (int i = 0; i < 2; i++)
+            {
+                Console.WriteLine("Cards for player 3 :" + person3Cards[i].Rank + " " + person3Cards[i].Suit);
+            }
             Console.WriteLine();
         }
     }
