@@ -7,8 +7,33 @@ using UnityEngine;
 /// </summary>
 public class Asteroid : MonoBehaviour {
 
+    [SerializeField]
+    Sprite asteroid1;
+    [SerializeField]
+    Sprite asteroid2;
+    [SerializeField]
+    Sprite asteroid3;
+
+    SpriteRenderer renderer;
+
 	// Use this for initialization
 	void Start () {
+
+        renderer = GetComponent<SpriteRenderer>();
+        int RandomNum = Random.Range(1, 3);
+        if(RandomNum ==1)
+        {
+            renderer.sprite = asteroid1;
+        }
+        else if(RandomNum ==2)
+        {
+            renderer.sprite = asteroid2;
+        }
+        else
+        {
+            renderer.sprite = asteroid3;
+        }
+
         // apply impulse force to get game object moving
         const float MinImpulseForce = 3f;
         const float MaxImpulseForce = 5f;
