@@ -13,8 +13,7 @@ public class Ship : MonoBehaviour
     const float ThrustForce = 10;
     const float RotateDegreesPerSecond = 180;
 
-    // screen wrapping support
-    float colliderRadius;
+
 
 	/// <summary>
 	/// Use this for initialization
@@ -23,7 +22,6 @@ public class Ship : MonoBehaviour
 	{
 		// saved for efficiency
         rb2D = GetComponent<Rigidbody2D>();
-        colliderRadius = GetComponent<CircleCollider2D>().radius;
 	}
 	
 	/// <summary>
@@ -62,26 +60,5 @@ public class Ship : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Called when the game object becomes invisible to the camera
-    /// </summary>
-    void OnBecameInvisible()
-    {
-        Vector2 position = transform.position;
 
-        // check left, right, top, and bottom sides
-        if (position.x + colliderRadius < ScreenUtils.ScreenLeft ||
-            position.x - colliderRadius > ScreenUtils.ScreenRight)
-        {
-            position.x *= -1;
-        }
-        if (position.y - colliderRadius > ScreenUtils.ScreenTop ||
-            position.y + colliderRadius < ScreenUtils.ScreenBottom)
-        {
-            position.y *= -1;
-        }
-
-        // move ship
-        transform.position = position;
-    }
 }
