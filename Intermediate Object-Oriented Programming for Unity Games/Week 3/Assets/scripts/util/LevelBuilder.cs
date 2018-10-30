@@ -83,6 +83,11 @@ public class LevelBuilder : MonoBehaviour
                 //blockLists[i, j].GetComponent<PickupBlock>().pickupEffect = PickupEffect.Freezer;
                 //blockLists[i, j].transform.position = new Vector3((i - 5) * blockWidth, ScreenUtils.ScreenTop * (0.8f - (j * 0.2f)), 0);
 
+                //// test speedup
+                //blockLists[i, j] = Instantiate(prefabPickupBlock);
+                //blockLists[i, j].GetComponent<PickupBlock>().pickupEffect = PickupEffect.Speedup;
+                //blockLists[i, j].transform.position = new Vector3((i - 5) * blockWidth, ScreenUtils.ScreenTop * (0.8f - (j * 0.2f)), 0);
+
 
             }
         }

@@ -16,10 +16,17 @@ public class Paddle : MonoBehaviour
     // aiming support
     const float BounceAngleHalfRange = 60 * Mathf.Deg2Rad;
 
+    // freezer related
     bool isFrozen = false;
     bool frozenFinished = true;
-    float savedTime;
-    Timer frozenTimer;
+
+    // speedup related
+    bool isSpeedup = false;
+    bool speedupFinished = true;
+    float speedupFactor;
+    float paddleMoveUnitsPerSecond;
+    float maxPaddleMoveUnitsPerSecond;
+
 
     /// <summary>
     /// Use this for initialization
@@ -32,7 +39,12 @@ public class Paddle : MonoBehaviour
         halfColliderWidth = bc2d.size.x / 2;
         halfColliderHeight = bc2d.size.y / 2;
 
+        speedupFactor = ConfigurationUtils.SpeedupFactor;
+        paddleMoveUnitsPerSecond = ConfigurationUtils.PaddleMoveUnitsPerSecond;
+        maxPaddleMoveUnitsPerSecond = speedupFactor * paddleMoveUnitsPerSecond;
+
         EventManager.AddFreezerEffectLisener(HandleFreezerEffectActivatedEvent);
+        EventManager.AddSpeedupEffectLisener(HandleSpeedupEffectActivatedEvent);
     }
 
     /// <summary>
@@ -40,7 +52,8 @@ public class Paddle : MonoBehaviour
     /// </summary>
     void Update()
     {
-
+        //Debug.Log(rb2d.velocity);
+        Debug.Log(paddleMoveUnitsPerSecond);
     }
 
     /// <summary>
@@ -57,10 +70,16 @@ public class Paddle : MonoBehaviour
             rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
 
+        if(speedupFinished == true)
+        {
+            isSpeedup = false;
+            paddleMoveUnitsPerSecond = ConfigurationUtils.PaddleMoveUnitsPerSecond;
+        }
+
         if (horizontalInput != 0 && isFrozen == false)
         {
             Vector2 position = rb2d.position;
-            position.x += horizontalInput * ConfigurationUtils.PaddleMoveUnitsPerSecond *
+            position.x += horizontalInput * paddleMoveUnitsPerSecond *
                 Time.deltaTime;
             position.x = CalculateClampedX(position.x);
             rb2d.MovePosition(position);
@@ -130,7 +149,6 @@ public class Paddle : MonoBehaviour
         frozenFinished = false;
         rb2d.constraints = RigidbodyConstraints2D.FreezePositionX;
         StartCoroutine(FrozenFinished(frozenTime));
-
     }
 
     IEnumerator FrozenFinished(float waitTime)
@@ -138,5 +156,23 @@ public class Paddle : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
         isFrozen = false;
         frozenFinished = true;
+    }
+
+    void HandleSpeedupEffectActivatedEvent(float speedupTime,float speedupFactor)
+    {
+        isSpeedup = true;
+        speedupFinished = false;
+        if(paddleMoveUnitsPerSecond != maxPaddleMoveUnitsPerSecond)
+        {
+            paddleMoveUnitsPerSecond *= speedupFactor;
+        }
+        StartCoroutine(SpeedupFinished(speedupTime));
+    }
+
+    IEnumerator SpeedupFinished(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        isSpeedup = false;
+        speedupFinished = true;
     }
 }

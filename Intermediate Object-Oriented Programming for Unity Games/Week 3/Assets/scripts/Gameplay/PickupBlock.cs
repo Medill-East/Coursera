@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PickupBlock : Block {
+public class PickupBlock : Block
+{
 
     #region fields
 
@@ -15,9 +16,15 @@ public class PickupBlock : Block {
 
     PickupEffect effect;
 
+    // freezer effect related
     float freezerEffectDuration;
-
     protected FreezerEffectActivatedEvent freezerEffectActivatedEvent;
+
+    // speedup effect related
+    float speedupEffectDuration;
+    float speedupFactor;
+    protected SpeedupEffectActivatedEvent speedupEffectActivatedEvent;
+
 
     #endregion
 
@@ -28,18 +35,26 @@ public class PickupBlock : Block {
         set
         {
             effect = value;
+
             freezerEffectDuration = ConfigurationUtils.FreezerEffectDuration;
             freezerEffectActivatedEvent = new FreezerEffectActivatedEvent();
             EventManager.AddFreezerEffectInvoker(this);
             if (value == PickupEffect.Freezer)
             {
+
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteOfFreezerBlock;
             }
-            else
+
+            speedupEffectDuration = ConfigurationUtils.SpeedupEffectDuration;
+            speedupFactor = ConfigurationUtils.SpeedupFactor;
+            speedupEffectActivatedEvent = new SpeedupEffectActivatedEvent();
+            EventManager.AddSpeedupEffectInvoker(this);
+            if (value == PickupEffect.Speedup)
             {
+
                 gameObject.GetComponent<SpriteRenderer>().sprite = spriteOfSpeedupBlock;
             }
-            
+
         }
     }
 
@@ -53,9 +68,14 @@ public class PickupBlock : Block {
 
     #region public method
 
-    public void AddFreezerEffectListener(UnityAction<float> lisener)
+    public void AddFreezerEffectListener(UnityAction<float> listener)
     {
-        freezerEffectActivatedEvent.AddListener(lisener);
+        freezerEffectActivatedEvent.AddListener(listener);
+    }
+
+    public void AddSpeedupEffectListener(UnityAction<float, float> listener)
+    {
+        speedupEffectActivatedEvent.AddListener(listener);
     }
 
     #endregion
@@ -64,9 +84,13 @@ public class PickupBlock : Block {
     {
         if (coll.gameObject.CompareTag("Ball"))
         {
-            if(effect == PickupEffect.Freezer)
+            if (effect == PickupEffect.Freezer)
             {
                 freezerEffectActivatedEvent.Invoke(freezerEffectDuration);
+            }
+            if (effect == PickupEffect.Speedup)
+            {
+                speedupEffectActivatedEvent.Invoke(speedupEffectDuration, speedupFactor);
             }
             HUD hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
             hud.AddScore(pointsOfBlock);

@@ -27,6 +27,8 @@ public class ConfigurationData
     float pickupBlockProbabilities = 3;
     int numberOfBalls = 10;
     float freezerEffectDuration = 2;
+    float speedupEffectDuration = 3;
+    float speedupFactor = 2;
 
     #endregion
 
@@ -138,6 +140,22 @@ public class ConfigurationData
         get { return freezerEffectDuration; }
     }
 
+    /// <summary>
+    /// get speedup effect duration
+    /// </summary>
+    public float SpeedupEffectDuration
+    {
+        get { return speedupEffectDuration; }
+    }
+
+    /// <summary>
+    /// get speedup factor
+    /// </summary>
+    public float SpeedupFactor
+    {
+        get { return speedupFactor; }
+    }
+
     #endregion
 
     #region Constructor
@@ -204,6 +222,8 @@ public class ConfigurationData
         pickupBlockProbabilities = float.Parse(values[10]);
         numberOfBalls = int.Parse(values[11]);
         freezerEffectDuration = float.Parse(values[12]);
+        speedupEffectDuration = float.Parse(values[13]);
+        speedupFactor = float.Parse(values[14]);
 
     }
 
